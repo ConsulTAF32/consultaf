@@ -65,49 +65,62 @@ function inline(str, markDefs) {
 const p = (str) => { const md = []; return { _type: "block", _key: key(), style: "normal", markDefs: md, children: inline(str, md) }; };
 const h2 = (str) => { const md = []; return { _type: "block", _key: key(), style: "h2", markDefs: md, children: inline(str, md) }; };
 
+// Datele articolului pe care îl creezi acum (schimbă-le pentru următorul articol).
+const TITLE = "RO e-Factura pe înțelesul antreprenorului: ce e și cum eviți amenzile";
+const SLUG = "ro-e-factura-pe-intelesul-antreprenorului";
+const EXCERPT =
+  "Din 2024–2025, facturarea electronică prin ANAF a devenit obligatorie pentru tot mai multe firme. Pe scurt: ce înseamnă, ce ai de făcut și greșelile care atrag amenzi.";
+const COVER_IMAGE = "public/img/administrativ.webp";
+const COVER_ALT = "Antreprenor care emite o factură electronică pe laptop";
+
 const body = [
-  p("Multe firme mici merg ani la rând „pe intuiție”. Funcționează — până într-o zi când apare un control, pleacă omul-cheie sau, deși ai vândut bine, nu mai ai bani de salarii. De obicei nu e ghinion: sunt semne care se vedeau de mult. Iată cinci dintre cele mai frecvente — și ce poți face pentru fiecare."),
+  p("Dacă ai o firmă, ai auzit deja de „e-Factura” — de obicei în aceeași propoziție cu „obligatoriu” și „amendă”. Vestea bună e că, odată înțeles, sistemul e mai simplu decât pare. Iată tot ce contează, fără jargon."),
 
-  h2("1. Nu poți spune în 2 minute cât ai pe stoc și cât valorează"),
-  p("Dacă răspunsul la „cât marfă am și cât face?” este „trebuie să mă uit” sau „întreb pe cineva”, banii tăi stau pe un raft fără să știi exact câți. Un stoc prost ținut înseamnă fie capital blocat degeaba, fie vânzări pierdute fiindcă tocmai ce-ți trebuia lipsea."),
-  p("**Ce poți face:** un inventar faptic, comparat cu evidența scriptică, și o regulă simplă de actualizare. Nu ai nevoie de un program scump ca să începi — un fișier bine ținut e deja un pas uriaș."),
+  h2("Ce este, de fapt, RO e-Factura"),
+  p("RO e-Factura este sistemul național prin care facturile nu se mai trimit doar pe e-mail sau pe hârtie, ci se transmit electronic, într-un format standard, prin platforma ANAF. Practic, ANAF „vede” factura în același timp cu clientul tău. Scopul declarat: mai puțină evaziune și mai puțină birocrație pe termen lung."),
 
-  h2("2. Un control ANAF te sperie"),
-  p("Frica de control nu vine din control în sine, ci din nesiguranță: nu știi sigur dacă toate actele sunt la locul lor. O firmă organizată tratează un control ca pe o verificare de rutină, nu ca pe o criză."),
-  p("**Ce poți face:** ține facturile (emise și primite) complete și ușor de găsit, fii la zi cu RO e-Factura și verifică periodic mesajele din SPV. Pașii concreți sunt în [Ghidul firmei în control](/resurse)."),
+  h2("Cine e obligat și de când"),
+  p("Pe scurt: pentru relațiile **între firme (B2B)**, sistemul a devenit obligatoriu de la **1 ianuarie 2024**. Pentru vânzările **către populație (B2C)**, obligația a intrat în vigoare de la **1 ianuarie 2025**. Există praguri și excepții care se schimbă des, așa că pentru situația exactă a firmei tale verifică pe ANAF și cu contabilul."),
 
-  h2("3. Iei decizii „din burtă”, nu din date"),
-  p("Când informațiile sunt împrăștiate în capete, caiete și mesaje pe telefon, deciziile devin pariuri. Nu îți trebuie rapoarte complicate — îți trebuie câteva cifre corecte, la îndemână."),
-  p("**Ce poți face:** alege 3–4 indicatori pe care îi urmărești lunar (încasări, cheltuieli, stoc, restanțe de la clienți) și un singur loc unde stau."),
+  h2("Ce trebuie să faci, pas cu pas"),
+  p("**1. Acces la SPV.** Ai nevoie de acces în Spațiul Privat Virtual — „cutia poștală” online a firmei în relația cu ANAF."),
+  p("**2. O modalitate de a emite.** Fie un program de facturare care trimite direct în e-Factura, fie aplicația pusă la dispoziție de ANAF. Multe programe de gestiune fac deja asta automat."),
+  p("**3. Transmiterea la timp.** Factura se transmite în sistem în termenul legal de la emitere — nu o lăsa „pe mâine”."),
+  p("**4. Arhivarea.** Factura electronică se păstrează mai mulți ani; asigură-te că ai unde și cum, organizat, ca s-o găsești în 2 minute la nevoie."),
 
-  h2("4. Totul depinde de o singură persoană"),
-  p("Dacă firma se oprește când lipsești tu, nu ai o firmă — ai un job foarte solicitant. „Totul în capul patronului” este cea mai mare vulnerabilitate a unei afaceri mici."),
-  p("**Ce poți face:** scrie procesele repetitive ca pași simpli și clarifică cine ce face și până când. Câteva proceduri scurte fac firma mai rezistentă și mult mai ușor de delegat."),
+  h2("Greșelile care atrag amenzi"),
+  p("Cele mai frecvente nu țin de rea-voință, ci de dezordine: facturi netrimise în termen, transmise greșit sau deloc, ori pierdute prin e-mailuri. Sancțiunile pot ajunge până la **15% din valoarea facturii** în anumite situații, plus amenzi fixe pentru întârzieri. Cu alte cuvinte, o problemă de organizare devine repede o problemă de bani."),
 
-  h2("5. Ai profit pe hârtie, dar nu ai bani de plăți"),
-  p("Profitul și banii din cont nu sunt același lucru. Poți fi „pe plus” în contabilitate și totuși să nu ai cu ce plăti furnizorii, pentru că banii sunt blocați în stoc sau în facturi neîncasate. Nu întâmplător, majoritatea firmelor care eșuează au de fapt o problemă de cash-flow."),
-  p("**Ce poți face:** urmărește fluxul de bani separat de profit — cât intră, cât iese și când. O imagine clară a încasărilor și plăților viitoare previne majoritatea surprizelor neplăcute."),
+  h2("Cum te pregătești fără stres"),
+  p("Nu îți trebuie soluții scumpe — îți trebuie un proces clar: cine emite, prin ce program, până când se transmite și unde se arhivează. Odată ce ai acest flux pus la punct, e-Factura devine o rutină, nu o sursă de panică lunară."),
+  p("Dacă vrei să pui la punct acest flux în firma ta — de la accesul în SPV la organizarea documentelor — pot să te ajut. Vezi [serviciile](/servicii) sau citește mai mult în [Ghidul firmei în control](/resurse)."),
 
-  h2("De unde începi"),
-  p("Nu trebuie să le rezolvi pe toate deodată. Alege semnul care te apasă cel mai tare și fă primul pas acolo. Ordinea aduce ordine: o zonă pusă la punct le face vizibile și pe celelalte."),
-  p("Dacă vrei o privire din afară asupra firmei tale, putem face împreună un audit rapid de organizare — vezi [serviciile](/servicii) sau scrie-mi direct."),
+  h2("De reținut"),
+  p("RO e-Factura nu e un moft birocratic care trece — e noua normalitate. Firmele care își fac ordine acum tratează verificările ca pe rutină. Restul plătesc, la propriu, dezordinea."),
+  p("_Acest articol este orientativ și nu reprezintă consultanță fiscală. Pentru obligațiile exacte ale firmei tale, verifică pe ANAF și consultă-te cu contabilul._"),
 ];
 
 async function main() {
+  // Evită duplicatele dacă rulezi scriptul de două ori.
+  const existing = await client.fetch('*[_type=="article" && slug.current==$slug][0]._id', { slug: SLUG });
+  if (existing) {
+    console.log(`\n⚠️  Există deja un articol cu slug-ul „${SLUG}” (${existing}). Nu creez un duplicat.\n`);
+    return;
+  }
+
   console.log("→ Încarc imaginea de copertă...");
-  const imageBuffer = readFileSync(join(root, "public/img/controale.webp"));
-  const asset = await client.assets.upload("image", imageBuffer, { filename: "control-firma.webp" });
+  const imageBuffer = readFileSync(join(root, COVER_IMAGE));
+  const asset = await client.assets.upload("image", imageBuffer, { filename: `${SLUG}.webp` });
 
   const doc = {
     _type: "article",
-    title: "5 semne că firma ta a scăpat de sub control (și ce poți face)",
-    slug: { _type: "slug", current: "5-semne-ca-firma-ta-a-scapat-de-sub-control" },
-    excerpt:
-      "Multe firme mici merg „pe intuiție” până când un control, un om-cheie care pleacă sau un gol de bani le dă peste cap. Iată semnele de luat în serios — și primii pași spre ordine.",
+    title: TITLE,
+    slug: { _type: "slug", current: SLUG },
+    excerpt: EXCERPT,
     coverImage: {
       _type: "image",
       asset: { _type: "reference", _ref: asset._id },
-      alt: "Antreprenor care pune ordine în documentele și procesele firmei",
+      alt: COVER_ALT,
     },
     publishedAt: new Date().toISOString(),
     body,
@@ -116,7 +129,7 @@ async function main() {
   console.log("→ Creez articolul...");
   const created = await client.create(doc);
   console.log(`\n✅ Gata! Articol creat: ${created._id}`);
-  console.log("   Vezi-l la: http://localhost:3000/articole/5-semne-ca-firma-ta-a-scapat-de-sub-control\n");
+  console.log(`   Vezi-l la: http://localhost:3000/articole/${SLUG}\n`);
 }
 
 main().catch((err) => {
