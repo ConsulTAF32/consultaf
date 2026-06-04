@@ -20,6 +20,7 @@ export const nav = [
   { href: "/", label: "Acasă" },
   { href: "/servicii", label: "Servicii" },
   { href: "/resurse", label: "Resurse" },
+  { href: "/articole", label: "Articole" },
   { href: "/despre", label: "Despre" },
   { href: "/contact", label: "Contact" },
 ];
