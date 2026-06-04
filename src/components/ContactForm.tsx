@@ -28,7 +28,7 @@ export function ContactForm() {
       const res = await fetch("/__forms.html", {
         method: "POST",
         headers: { "Content-Type": "application/x-www-form-urlencoded" },
-        body: encode({ "form-name": "contact", "bot-field": botField, ...form }),
+        body: encode({ "form-name": "contact-form", "bot-field": botField, ...form }),
       });
       if (!res.ok) throw new Error(String(res.status));
       setStatus("ok");
@@ -57,7 +57,7 @@ export function ContactForm() {
 
   return (
     <form
-      name="contact"
+      name="contact-form"
       method="POST"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
