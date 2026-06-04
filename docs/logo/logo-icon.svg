@@ -1,0 +1,37 @@
+<svg width="240" height="240" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="ConsulTAF">
+  <defs>
+    <linearGradient id="orbit" x1="10" y1="85" x2="90" y2="15" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#16477E"/>
+      <stop offset="0.55" stop-color="#3F8AC8"/>
+      <stop offset="1" stop-color="#BcdCF0"/>
+    </linearGradient>
+    <linearGradient id="arrow" x1="20" y1="78" x2="80" y2="18" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#1C5C9E"/>
+      <stop offset="1" stop-color="#4E94CE"/>
+    </linearGradient>
+    <linearGradient id="greenBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#8EC74A"/>
+      <stop offset="1" stop-color="#5E9A35"/>
+    </linearGradient>
+    <linearGradient id="navyBar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2E5A8C"/>
+      <stop offset="1" stop-color="#163A63"/>
+    </linearGradient>
+  </defs>
+
+  <!-- orbit swoosh: open ring, gap at upper-right where the arrow exits -->
+  <path d="M 78 24
+           A 38 38 0 1 0 86 56"
+        stroke="url(#orbit)" stroke-width="6.5" stroke-linecap="round" fill="none"/>
+
+  <!-- ascending bars -->
+  <rect x="30" y="56" width="8.5" height="20" rx="2.6" fill="url(#greenBar)"/>
+  <rect x="41" y="48" width="8.5" height="28" rx="2.6" fill="url(#navyBar)"/>
+  <rect x="52" y="38" width="8.5" height="38" rx="2.6" fill="url(#greenBar)"/>
+  <rect x="63" y="28" width="8.5" height="48" rx="2.6" fill="url(#navyBar)"/>
+
+  <!-- upward arrow sweeping up-right -->
+  <path d="M 26 70 C 40 64, 52 52, 74 26"
+        stroke="url(#arrow)" stroke-width="6" stroke-linecap="round" fill="none"/>
+  <path d="M 62 24 L 79 21 L 74 38 Z" fill="#4E94CE"/>
+</svg>

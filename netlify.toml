@@ -1,0 +1,10 @@
+# Netlify config for the ConsulTAF Next.js app (lives at repo root).
+# Netlify auto-detects Next.js and uses its built-in Next runtime
+# (handles SSR, next/image, and fonts) — no plugin needed.
+
+[build]
+  command = "npm run build"
+  publish = ".next"
+
+[build.environment]
+  NODE_VERSION = "20"

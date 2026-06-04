@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ConsulTAF — DNS setup for the website (keep Google email working)</title>
+<style>
+  :root{--navy:#05192F;--navy2:#0B2545;--green:#669E44;--lime:#8EC74A;--mist:#F5F7FA;--ink:#0B2545;--amber:#92400e;--amberbg:#fffbeb;}
+  *{box-sizing:border-box}
+  body{margin:0;font:16px/1.6 -apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1f2937;background:#fff}
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px 60px}
+  header{background:var(--navy);color:#fff;padding:34px 0;margin-bottom:36px}
+  header .wrap{padding-top:0;padding-bottom:0}
+  .brand{font-weight:800;font-size:26px;letter-spacing:.2px}
+  .brand span{color:var(--lime)}
+  header p{margin:.4rem 0 0;color:#cbd5e1}
+  h2{color:var(--navy);margin-top:38px;font-size:22px;border-bottom:2px solid var(--green);padding-bottom:6px}
+  h3{color:var(--navy);margin-top:26px;font-size:17px}
+  code{background:var(--mist);padding:2px 7px;border-radius:6px;font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14px;color:var(--navy2);word-break:break-all}
+  table{width:100%;border-collapse:collapse;margin:14px 0;font-size:14.5px}
+  th,td{border:1px solid #e5e7eb;padding:10px 12px;text-align:left;vertical-align:top}
+  th{background:var(--navy);color:#fff;font-weight:600}
+  tr:nth-child(even) td{background:var(--mist)}
+  .add th{background:var(--green)}
+  .callout{border-radius:12px;padding:16px 18px;margin:18px 0}
+  .warn{background:var(--amberbg);border:1px solid #fcd34d;color:var(--amber)}
+  .ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
+  .note{background:var(--mist);border:1px solid #e5e7eb}
+  .tag{display:inline-block;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;vertical-align:middle}
+  .placeholder{background:#fef9c3;border:1px dashed #ca8a04;padding:1px 6px;border-radius:6px;font-weight:600}
+  ol li,ul li{margin:6px 0}
+  footer{margin-top:46px;padding-top:18px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:13px}
+  .step{background:var(--navy2);color:#fff;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-right:8px}
+</style>
+</head>
+<body>
+<header>
+  <div class="wrap">
+    <div class="brand">Consul<span>TAF</span></div>
+    <p>DNS setup — point the domain to the new website while keeping Google&nbsp;Workspace email working</p>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="callout note">
+    <strong>What this is.</strong> The ConsulTAF website is hosted on <strong>Netlify</strong>. To make it appear at
+    <code>consultaf.org</code>, two DNS records need to be added at wherever the domain’s DNS is managed
+    (e.g. Squarespace / former Google Domains, or your registrar). <strong>Email is not affected</strong> — the website
+    and the email use different record types.
+  </div>
+
+  <h2>Before you start — one value to fill in</h2>
+  <p>The Netlify site address is needed for the <code>www</code> record. It looks like
+    <span class="placeholder">your-site-name.netlify.app</span> and can be found in Netlify under
+    <em>Site&nbsp;configuration → Domain&nbsp;management</em>. Replace the placeholder below with that exact value.</p>
+
+  <h2>1. Records to ADD <span class="tag">website</span></h2>
+  <p>Add these two records. If a conflicting record of the same name/type already exists, update it to match.</p>
+  <table class="add">
+    <tr><th>Type</th><th>Name / Host</th><th>Value / Points to</th><th>TTL</th></tr>
+    <tr><td><strong>A</strong></td><td><code>@</code> (the root domain, <code>consultaf.org</code>)</td><td><code>75.2.60.5</code></td><td>Auto / 3600</td></tr>
+    <tr><td><strong>CNAME</strong></td><td><code>www</code></td><td><span class="placeholder">your-site-name.netlify.app</span></td><td>Auto / 3600</td></tr>
+  </table>
+  <div class="callout note">
+    <strong>If your DNS provider won’t allow an <code>A</code> record at the root</strong>, use an
+    <code>ALIAS</code> / <code>ANAME</code> record on <code>@</code> pointing to
+    <code>apex-loadbalancer.netlify.com</code> instead. (Both approaches achieve the same result.)
+  </div>
+
+  <h2>2. Records to LEAVE UNTOUCHED <span class="tag" style="background:#b91c1c">do not change</span></h2>
+  <div class="callout warn">
+    <strong>Important:</strong> Do <u>not</u> delete or modify any of the records below. These keep
+    <code>@consultaf.org</code> email (Google Workspace) working. Changing them can break email delivery.
+  </div>
+  <ul>
+    <li><strong>MX</strong> records (e.g. <code>smtp.google.com</code>, or the older <code>ASPMX.L.GOOGLE.COM</code> set) — <strong>keep as-is</strong>.</li>
+    <li><strong>TXT — SPF</strong> (looks like <code>v=spf1 include:_spf.google.com ~all</code>) — <strong>keep as-is</strong>.</li>
+    <li><strong>TXT — DKIM</strong> (a <code>google._domainkey…</code> record, if present) — <strong>keep as-is</strong>.</li>
+    <li><strong>TXT — DMARC</strong> (a <code>_dmarc</code> record, if present) — <strong>keep as-is</strong>.</li>
+    <li>Any Google site-verification <strong>TXT</strong> record — <strong>keep as-is</strong>.</li>
+  </ul>
+
+  <h2>3. Do NOT change the nameservers</h2>
+  <div class="callout warn">
+    Please keep the domain’s current <strong>nameservers</strong>. We are <em>not</em> moving DNS hosting —
+    only adding the two website records above. Switching nameservers would require rebuilding the email
+    records and risks email downtime.
+  </div>
+
+  <h2>4. After the records are saved</h2>
+  <ol>
+    <li>DNS changes can take from a few minutes up to <strong>48 hours</strong> to propagate.</li>
+    <li>Netlify will automatically issue a free <strong>HTTPS/SSL certificate</strong> once it detects the records — no action needed.</li>
+    <li>The site will then load at both <code>https://consultaf.org</code> and <code>https://www.consultaf.org</code>.</li>
+  </ol>
+
+  <div class="callout ok">
+    <strong>Summary:</strong> add <code>A → 75.2.60.5</code> on the root and <code>CNAME → your Netlify address</code> on <code>www</code>.
+    Leave every email (MX/TXT) record and the nameservers exactly as they are. That’s it. ✅
+  </div>
+
+  <h3>Quick reference — what each record does</h3>
+  <table>
+    <tr><th>Record</th><th>Controls</th><th>Who uses it</th></tr>
+    <tr><td>A / CNAME</td><td>The website</td><td>Netlify</td></tr>
+    <tr><td>MX</td><td>Incoming email</td><td>Google Workspace</td></tr>
+    <tr><td>TXT (SPF/DKIM/DMARC)</td><td>Email authenticity / anti-spam</td><td>Google Workspace</td></tr>
+  </table>
+
+  <footer>
+    Prepared for ConsulTAF (Tiberiu Ciprian Franciuc). Questions about these records can be answered by the
+    person who set up the website. The only values that change are the two website records in section&nbsp;1.
+  </footer>
+
+</div>
+</body>
+</html>
