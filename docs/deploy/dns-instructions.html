@@ -27,7 +27,7 @@
   .ok{background:#ecfdf5;border:1px solid #a7f3d0;color:#065f46}
   .note{background:var(--mist);border:1px solid #e5e7eb}
   .tag{display:inline-block;background:var(--green);color:#fff;font-size:12px;font-weight:700;padding:2px 9px;border-radius:999px;vertical-align:middle}
-  .placeholder{background:#fef9c3;border:1px dashed #ca8a04;padding:1px 6px;border-radius:6px;font-weight:600}
+  .val{background:#ecfdf5;border:1px solid #a7f3d0;padding:1px 6px;border-radius:6px;font-weight:600;color:#065f46}
   ol li,ul li{margin:6px 0}
   footer{margin-top:46px;padding-top:18px;border-top:1px solid #e5e7eb;color:#6b7280;font-size:13px}
   .step{background:var(--navy2);color:#fff;width:26px;height:26px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-weight:700;font-size:14px;margin-right:8px}
@@ -37,44 +37,73 @@
 <header>
   <div class="wrap">
     <div class="brand">Consul<span>TAF</span></div>
-    <p>DNS setup — point the domain to the new website while keeping Google&nbsp;Workspace email working</p>
+    <p>DNS setup — point <code style="color:#cbd5e1;background:transparent;padding:0">consultaf.org</code> to the new website while keeping Google&nbsp;Workspace email working</p>
   </div>
 </header>
 
 <div class="wrap">
 
   <div class="callout note">
-    <strong>What this is.</strong> The ConsulTAF website is hosted on <strong>Netlify</strong>. To make it appear at
-    <code>consultaf.org</code>, two DNS records need to be added at wherever the domain’s DNS is managed
-    (e.g. Squarespace / former Google Domains, or your registrar). <strong>Email is not affected</strong> — the website
-    and the email use different record types.
+    <strong>What this is.</strong> The ConsulTAF website is now built and hosted on <strong>Netlify</strong>
+    (live at <code>consultaf.netlify.app</code>). To make it appear at your own address
+    <code>consultaf.org</code>, two small DNS records need to be changed where the domain is managed.
+    <strong>Your email is not affected</strong> — the website and the email use completely different record types,
+    and we only touch the website ones.
   </div>
 
-  <h2>Before you start — one value to fill in</h2>
-  <p>The Netlify site address is needed for the <code>www</code> record. It looks like
-    <span class="placeholder">your-site-name.netlify.app</span> and can be found in Netlify under
-    <em>Site&nbsp;configuration → Domain&nbsp;management</em>. Replace the placeholder below with that exact value.</p>
+  <h2>Where to do this — your domain is at Squarespace</h2>
+  <p>
+    <code>consultaf.org</code> was originally a <strong>Google&nbsp;Domains</strong> registration. Google sold Google&nbsp;Domains
+    to <strong>Squarespace</strong>, so the domain and its DNS settings now live in the Squarespace domains dashboard —
+    <em>not</em> in the Google&nbsp;Workspace admin console, and not at any web host.
+  </p>
+  <ol>
+    <li>Go to <code>https://domains.squarespace.com</code> and sign in (use the Google account that has owned the
+      domain — it will sign you into Squarespace).</li>
+    <li>Open <strong>consultaf.org</strong>.</li>
+    <li>Click <strong>DNS</strong> → <strong>DNS Settings</strong> (sometimes shown as <em>“Manage DNS records”</em>).</li>
+    <li>Scroll to the <strong>Custom Records</strong> section — that is where the changes below are made.</li>
+  </ol>
 
-  <h2>1. Records to ADD <span class="tag">website</span></h2>
-  <p>Add these two records. If a conflicting record of the same name/type already exists, update it to match.</p>
+  <h2>1. Website records — set these <span class="tag">website</span></h2>
+  <p>You will <strong>replace</strong> the records that currently point the domain at Squarespace’s own pages with
+    the two Netlify records below.</p>
+
+  <h3>1a. The root domain (<code>consultaf.org</code>)</h3>
+  <ul>
+    <li><strong>Delete</strong> any existing <code>A</code> records on the host <code>@</code> (there may be four of them,
+      with values starting <code>198.x</code> — those point at Squarespace).</li>
+    <li><strong>Add one</strong> new record:</li>
+  </ul>
   <table class="add">
-    <tr><th>Type</th><th>Name / Host</th><th>Value / Points to</th><th>TTL</th></tr>
-    <tr><td><strong>A</strong></td><td><code>@</code> (the root domain, <code>consultaf.org</code>)</td><td><code>75.2.60.5</code></td><td>Auto / 3600</td></tr>
-    <tr><td><strong>CNAME</strong></td><td><code>www</code></td><td><span class="placeholder">your-site-name.netlify.app</span></td><td>Auto / 3600</td></tr>
+    <tr><th>Type</th><th>Host</th><th>Value / Points to</th><th>TTL</th></tr>
+    <tr><td><strong>A</strong></td><td><code>@</code></td><td><span class="val">75.2.60.5</span></td><td>Auto / 3600</td></tr>
   </table>
+
+  <h3>1b. The <code>www</code> address (<code>www.consultaf.org</code>)</h3>
+  <ul>
+    <li><strong>Delete / edit</strong> the existing <code>www</code> record (it currently points to
+      <code>ext-sq.squarespace.com</code>).</li>
+    <li><strong>Set it to</strong> this:</li>
+  </ul>
+  <table class="add">
+    <tr><th>Type</th><th>Host</th><th>Value / Points to</th><th>TTL</th></tr>
+    <tr><td><strong>CNAME</strong></td><td><code>www</code></td><td><span class="val">consultaf.netlify.app</span></td><td>Auto / 3600</td></tr>
+  </table>
+
   <div class="callout note">
-    <strong>If your DNS provider won’t allow an <code>A</code> record at the root</strong>, use an
+    <strong>If Squarespace won’t let you put an <code>A</code> record on the root</strong>, use an
     <code>ALIAS</code> / <code>ANAME</code> record on <code>@</code> pointing to
-    <code>apex-loadbalancer.netlify.com</code> instead. (Both approaches achieve the same result.)
+    <code>apex-loadbalancer.netlify.com</code> instead. (Same result — only use this if the plain <code>A</code> isn’t accepted.)
   </div>
 
   <h2>2. Records to LEAVE UNTOUCHED <span class="tag" style="background:#b91c1c">do not change</span></h2>
   <div class="callout warn">
     <strong>Important:</strong> Do <u>not</u> delete or modify any of the records below. These keep
-    <code>@consultaf.org</code> email (Google Workspace) working. Changing them can break email delivery.
+    <code>@consultaf.org</code> email (Google&nbsp;Workspace) working. Changing them can break email delivery.
   </div>
   <ul>
-    <li><strong>MX</strong> records (e.g. <code>smtp.google.com</code>, or the older <code>ASPMX.L.GOOGLE.COM</code> set) — <strong>keep as-is</strong>.</li>
+    <li><strong>MX</strong> record — <code>smtp.google.com</code> (and/or the older <code>ASPMX.L.GOOGLE.COM</code> set) — <strong>keep as-is</strong>.</li>
     <li><strong>TXT — SPF</strong> (looks like <code>v=spf1 include:_spf.google.com ~all</code>) — <strong>keep as-is</strong>.</li>
     <li><strong>TXT — DKIM</strong> (a <code>google._domainkey…</code> record, if present) — <strong>keep as-is</strong>.</li>
     <li><strong>TXT — DMARC</strong> (a <code>_dmarc</code> record, if present) — <strong>keep as-is</strong>.</li>
@@ -83,21 +112,23 @@
 
   <h2>3. Do NOT change the nameservers</h2>
   <div class="callout warn">
-    Please keep the domain’s current <strong>nameservers</strong>. We are <em>not</em> moving DNS hosting —
-    only adding the two website records above. Switching nameservers would require rebuilding the email
-    records and risks email downtime.
+    Please keep the domain’s current <strong>nameservers</strong> (the <code>ns-cloud-…googledomains.com</code> ones).
+    We are <em>not</em> moving DNS hosting — only changing the two website records above. Switching nameservers would
+    require rebuilding the email records and risks email downtime.
   </div>
 
   <h2>4. After the records are saved</h2>
   <ol>
-    <li>DNS changes can take from a few minutes up to <strong>48 hours</strong> to propagate.</li>
-    <li>Netlify will automatically issue a free <strong>HTTPS/SSL certificate</strong> once it detects the records — no action needed.</li>
+    <li>DNS changes can take from a few minutes up to <strong>24–48 hours</strong> to take effect.</li>
+    <li>Netlify will automatically issue a free <strong>HTTPS/SSL certificate</strong> once it sees the records — no action needed.
+      (On the Netlify side the domain currently shows <em>“Pending DNS verification”</em>; that clears by itself once the records propagate.)</li>
     <li>The site will then load at both <code>https://consultaf.org</code> and <code>https://www.consultaf.org</code>.</li>
   </ol>
 
   <div class="callout ok">
-    <strong>Summary:</strong> add <code>A → 75.2.60.5</code> on the root and <code>CNAME → your Netlify address</code> on <code>www</code>.
-    Leave every email (MX/TXT) record and the nameservers exactly as they are. That’s it. ✅
+    <strong>Summary:</strong> at <code>domains.squarespace.com</code> → consultaf.org → DNS → Custom Records:
+    set <code>A&nbsp;@ → 75.2.60.5</code> and <code>CNAME&nbsp;www → consultaf.netlify.app</code> (replacing the old
+    Squarespace ones). Leave every email (MX/TXT) record and the nameservers exactly as they are. That’s it. ✅
   </div>
 
   <h3>Quick reference — what each record does</h3>
@@ -109,8 +140,9 @@
   </table>
 
   <footer>
-    Prepared for ConsulTAF (Tiberiu Ciprian Franciuc). Questions about these records can be answered by the
-    person who set up the website. The only values that change are the two website records in section&nbsp;1.
+    Prepared for ConsulTAF (Tiberiu Ciprian Franciuc). The only values that change are the two website records in
+    section&nbsp;1 — everything related to email stays exactly as it is. Questions about these records can be answered
+    by the person who set up the website.
   </footer>
 
 </div>

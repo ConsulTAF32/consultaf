@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { PageHero } from "@/components/Sections";
 import { Icon } from "@/components/Icons";
+import { ContactForm } from "@/components/ContactForm";
 import { site, audience } from "@/lib/content";
 
 export const metadata: Metadata = {
@@ -19,6 +20,16 @@ export default function ContactPage() {
 
       <section className="container-content py-16">
         <div className="grid gap-10 lg:grid-cols-2">
+          <div>
+            <h2 className="font-display text-2xl font-extrabold text-navy-800">
+              Trimite-mi un mesaj
+            </h2>
+            <p className="mt-2 mb-6 text-slate-600">
+              Completează formularul și revin cât pot de repede.
+            </p>
+            <ContactForm />
+          </div>
+
           <div className="space-y-4">
             <a
               href={site.whatsapp}
@@ -71,21 +82,21 @@ export default function ContactPage() {
                 <span className="block text-sm text-slate-500">{site.role}</span>
               </span>
             </div>
-          </div>
 
-          <div className="rounded-card bg-navy-900 p-8 text-white">
-            <h2 className="font-display text-2xl font-extrabold">Cu cine lucrez</h2>
-            <ul className="mt-6 space-y-3">
-              {audience.map((a) => (
-                <li key={a} className="flex items-start gap-3 text-slate-300">
-                  <span className="mt-0.5 text-brand-lime"><Icon name="check" className="h-5 w-5" /></span>
-                  {a}
-                </li>
-              ))}
-            </ul>
-            <p className="mt-8 rounded-btn bg-white/5 p-4 text-sm text-slate-300">
-              {site.disclaimer}
-            </p>
+            <div className="rounded-card bg-navy-900 p-8 text-white">
+              <h2 className="font-display text-2xl font-extrabold">Cu cine lucrez</h2>
+              <ul className="mt-6 space-y-3">
+                {audience.map((a) => (
+                  <li key={a} className="flex items-start gap-3 text-slate-300">
+                    <span className="mt-0.5 text-brand-lime"><Icon name="check" className="h-5 w-5" /></span>
+                    {a}
+                  </li>
+                ))}
+              </ul>
+              <p className="mt-8 rounded-btn bg-white/5 p-4 text-sm text-slate-300">
+                {site.disclaimer}
+              </p>
+            </div>
           </div>
         </div>
       </section>

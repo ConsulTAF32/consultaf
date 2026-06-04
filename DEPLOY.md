@@ -39,13 +39,21 @@ netlify deploy --build --prod # build + deploy to production
 
 ## Custom domain (consultaf.org) + Google Workspace email
 
-After the first deploy:
-1. Netlify → **Domain management → Add a domain** → `consultaf.org`.
-2. Copy the assigned `*.netlify.app` address.
-3. Send `docs/deploy/dns-instructions.html` to whoever manages the domain's DNS
-   (fill the `.netlify.app` placeholder first). It adds the website records and
-   **leaves Google Workspace email (MX/SPF/DKIM) untouched**.
-4. Netlify auto-issues HTTPS once DNS resolves.
+Netlify site: `consultaf.netlify.app`. Domain `consultaf.org` is registered at
+**Squarespace** (ex-Google Domains — nameservers `ns-cloud-*.googledomains.com`),
+with **Google Workspace email** (MX `smtp.google.com`). DNS is edited at
+`domains.squarespace.com`, *not* HostGator (that was the cocoi project) and *not*
+the Google Workspace admin console.
+
+1. Netlify → **Domain management → Add a domain** → `consultaf.org` (done — shows
+   *Pending DNS verification* until the records below propagate).
+2. At Squarespace DNS → Custom Records, replace the existing Squarespace records:
+   - `A` `@` → `75.2.60.5`
+   - `CNAME` `www` → `consultaf.netlify.app`
+   - **Leave MX / TXT (SPF/DKIM/DMARC) and the nameservers untouched** — that's the email.
+3. `docs/deploy/dns-instructions.html` is the customer-ready walkthrough (values
+   already filled in, Squarespace steps included) — send that as-is.
+4. Netlify auto-issues HTTPS once DNS resolves (a few minutes to 24–48h).
 
 ---
 
