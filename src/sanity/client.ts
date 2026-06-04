@@ -7,6 +7,7 @@ export const client = createClient({
   projectId,
   dataset,
   apiVersion,
-  // `useCdn: true` = răspunsuri rapide din CDN. Revalidarea se face prin webhook.
-  useCdn: true,
+  // `useCdn: false` = date mereu proaspete. Paginile sunt oricum cache-uite de
+  // Next (ISR + webhook), deci API-ul live e apelat doar la revalidare.
+  useCdn: false,
 });

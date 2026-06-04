@@ -49,8 +49,27 @@ export default async function ArticlePage({ params }: { params: { slug: string }
   const article = await getArticle(params.slug);
   if (!article) notFound();
 
+  // Date structurate (JSON-LD) pentru rezultate bogate în Google.
+  const jsonLd = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.excerpt,
+    datePublished: article.publishedAt,
+    image: article.coverImage
+      ? urlFor(article.coverImage).width(1200).height(630).fit("crop").url()
+      : undefined,
+    author: { "@type": "Person", name: "Tiberiu Ciprian Franciuc" },
+    publisher: { "@type": "Organization", name: "ConsulTAF" },
+    mainEntityOfPage: `https://consultaf.org/articole/${params.slug}`,
+  };
+
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       <article className="container-content max-w-3xl py-16">
         <Link
           href="/articole"

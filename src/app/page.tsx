@@ -2,6 +2,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Icon } from "@/components/Icons";
 import { SectionHeading, CtaBand } from "@/components/Sections";
+import { getArticles } from "@/sanity/queries";
+import { urlFor } from "@/sanity/image";
 import {
   badges,
   services,
@@ -14,7 +16,11 @@ import {
   site,
 } from "@/lib/content";
 
-export default function HomePage() {
+export const revalidate = 60;
+
+export default async function HomePage() {
+  const latestArticles = (await getArticles()).slice(0, 3);
+
   return (
     <>
       {/* HERO */}
@@ -286,6 +292,61 @@ export default function HomePage() {
           crescut mai repede decât structura ei. Exact aici intervin eu.
         </p>
       </section>
+
+      {/* ARTICOLE RECENTE */}
+      {latestArticles.length > 0 && (
+        <section className="bg-mist">
+          <div className="container-content py-20">
+            <div className="flex flex-wrap items-end justify-between gap-4">
+              <SectionHeading
+                eyebrow="De pe blog"
+                title="Articole recente"
+                intro="Idei practice despre organizare, control și conformare — pe înțelesul antreprenorului."
+              />
+              <Link
+                href="/articole"
+                className="inline-flex items-center gap-1 font-display text-sm font-semibold text-brand-green-dark hover:underline"
+              >
+                Toate articolele <Icon name="arrow" className="h-4 w-4" />
+              </Link>
+            </div>
+            <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+              {latestArticles.map((a) => (
+                <Link
+                  key={a._id}
+                  href={`/articole/${a.slug}`}
+                  className="group flex flex-col overflow-hidden rounded-card border border-slate-100 bg-white shadow-sm transition hover:shadow-lg"
+                >
+                  <div className="aspect-[16/10] overflow-hidden bg-mist">
+                    {a.coverImage ? (
+                      <Image
+                        src={urlFor(a.coverImage).width(700).height(440).fit("crop").auto("format").url()}
+                        alt={a.coverImage.alt || a.title}
+                        width={700}
+                        height={440}
+                        className="h-full w-full object-cover transition duration-300 group-hover:scale-105"
+                      />
+                    ) : null}
+                  </div>
+                  <div className="flex flex-1 flex-col p-6">
+                    <p className="text-xs font-semibold uppercase tracking-wide text-brand-green-dark">
+                      {new Date(a.publishedAt).toLocaleDateString("ro-RO", {
+                        day: "numeric",
+                        month: "long",
+                        year: "numeric",
+                      })}
+                    </p>
+                    <h3 className="mt-2 font-display text-lg font-bold text-navy-800 group-hover:text-brand-green-dark">
+                      {a.title}
+                    </h3>
+                    {a.excerpt && <p className="mt-2 text-sm text-slate-600">{a.excerpt}</p>}
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
 
       <CtaBand />
     </>
